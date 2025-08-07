@@ -101,9 +101,17 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 ---
 
 
+
 ## 🧪 Test Scenarios
-- **Happy path:** Register with valid data (API only), expect "User Register Successfully." in API response.
-- **Negative path:** Register with invalid password, expect password validation error (UI or API fallback).
+
+- **Registration Happy Path:**
+  - Register with valid data (API only), expect "User Register Successfully." in API response.
+- **Registration Negative Path:**
+  - Register with invalid password, expect password validation error (UI or API fallback).
+- **Login Happy Path:**
+  - Login with valid stored credentials, expect successful login (profile page or logout button visible).
+- **Login Negative Path:**
+  - Login with invalid credentials, expect error message (robust selector detection).
 
 ## 🔐 Password Regex
 ```
