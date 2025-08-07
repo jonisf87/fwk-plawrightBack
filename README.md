@@ -1,6 +1,6 @@
-# Playwright + Cucumber + TypeScript E2E Demo (POM)
+# Playwright + Cucumber + TypeScript E2E Demo (Registration & Login)
 
-Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
+Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register) and [demoqa.com/login](https://demoqa.com/login) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
 
 ## 📦 Folder Structure
 
@@ -50,13 +50,16 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
    ```
 
 
+
 ## 📝 Project Goals & Implementation Notes
-- Automate registration (UI or API fallback if CAPTCHA blocks UI)
-- Validate both successful and failed registrations (password regex)
+- Automate both registration and login flows (UI or API fallback if CAPTCHA blocks UI registration)
+- Validate both successful and failed registrations (password regex) and logins (valid/invalid credentials)
 - Store credentials for login reuse
 - Use POM and Cucumber for maintainable, readable tests
+- Ensure robust error message detection and credential handling for both flows
 
 ---
+
 
 
 
@@ -65,10 +68,10 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 - **Playwright browser installation required:**
   - After `npm install`, run `npx playwright install` to download browser binaries.
 
-- **Login E2E Feature Added:**
-  - New feature file: `tests/features/login.feature` with happy and negative login scenarios.
-  - Page Object: `tests/pages/LoginPage.ts` encapsulates login form actions and robust error message detection.
-  - Step Definitions: `tests/steps/Login.steps.ts` implements login steps, reuses credentials from registration, and handles both valid and invalid login attempts.
+- **Registration & Login E2E Features:**
+  - Feature files: `tests/features/registration.feature` and `tests/features/login.feature` cover both registration and login flows, each with happy and negative scenarios.
+  - Page Objects: `tests/pages/RegistrationPage.ts` and `tests/pages/LoginPage.ts` encapsulate UI actions and selectors for each flow.
+  - Step Definitions: `tests/steps/Registration.steps.ts` and `tests/steps/Login.steps.ts` implement all steps, including credential reuse and robust error message detection.
   - Credentials are read from `tests/support/data.json` and support both `userName` and `username` keys for compatibility.
   - Error message detection is robust, supporting multiple selectors and waiting for error visibility.
   - All login and registration scenarios are now fully passing.
@@ -78,20 +81,22 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
   - TypeScript and Playwright rules are enforced.
   - All code is linted and compliant with the rules (no unused variables, no unused catch params, no `any` types, etc).
   - To lint, run: `npx eslint . --ext .ts --max-warnings=0`
+
 - **Registration Happy Path:**
   - Now uses API registration only (bypasses UI and CAPTCHA).
   - UI message validation is removed; only API response is asserted.
 - **Registration Negative Path:**
   - Attempts UI registration, but if CAPTCHA blocks, falls back to API registration to validate password errors.
 - **Selectors:**
-  - All UI selectors for registration fields are based on the latest HTML attributes (see code for details).
+  - All UI selectors for registration and login fields are based on the latest HTML attributes (see code for details).
 - **Credentials Storage:**
   - Registered credentials are saved to `/tests/support/data.json` for reuse in login or other scenarios.
 - **Error Handling:**
   - If registration fails due to CAPTCHA, the test automatically switches to API registration.
+  - Login error messages are detected robustly, supporting multiple selectors and waiting for error visibility.
 - **Test Structure:**
-  - All test steps and logic are in `/tests/steps/Registration.steps.ts`.
-  - Page Object Model is used for UI actions, but happy path is API-only for reliability.
+  - All test steps and logic are in `/tests/steps/Registration.steps.ts` and `/tests/steps/Login.steps.ts`.
+  - Page Object Model is used for UI actions, but registration happy path is API-only for reliability.
 
 ---
 
