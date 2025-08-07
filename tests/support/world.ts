@@ -1,11 +1,13 @@
 import { setWorldConstructor, World, IWorldOptions } from '@cucumber/cucumber';
 import { Browser, BrowserContext, Page, chromium } from '@playwright/test';
 
+import type { RegistrationPage } from '../pages/RegistrationPage';
+
 export class CustomWorld extends World {
   browser!: Browser;
   context!: BrowserContext;
   page!: Page;
-  pageObj: any;
+  pageObj!: RegistrationPage;
   credentials: { userName: string; password: string } | null = null;
   _registrationMessage?: string;
   _registrationError?: string;

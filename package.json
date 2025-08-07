@@ -13,6 +13,9 @@
     "@cucumber/cucumber": "^10.0.0",
     "@faker-js/faker": "^8.0.2",
     "@playwright/test": "^1.44.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint": "^9.32.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }

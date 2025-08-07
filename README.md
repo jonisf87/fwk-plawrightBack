@@ -13,6 +13,7 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 ```
 
 
+
 ## 🚀 Getting Started
 
 1. **Install dependencies:**
@@ -30,7 +31,13 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
    npm test
    ```
 
-4. **Generate Playwright code (optional):**
+
+4. **Lint your code (optional but recommended):**
+   ```sh
+   npx eslint . --ext .ts --max-warnings=0
+   ```
+
+5. **Generate Playwright code (optional):**
    ```sh
    npm run codegen
    ```
@@ -44,10 +51,16 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 
 ---
 
+
 ## 🛠️ Implementation & Changes
 
 - **Playwright browser installation required:**
   - After `npm install`, run `npx playwright install` to download browser binaries.
+- **ESLint setup and compliance:**
+  - ESLint v9+ is configured with a flat config (`eslint.config.mjs`).
+  - TypeScript and Playwright rules are enforced.
+  - All code is linted and compliant with the rules (no unused variables, no unused catch params, no `any` types, etc).
+  - To lint, run: `npx eslint . --ext .ts --max-warnings=0`
 - **Registration Happy Path:**
   - Now uses API registration only (bypasses UI and CAPTCHA).
   - UI message validation is removed; only API response is asserted.

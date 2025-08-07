@@ -40,7 +40,7 @@ export class RegistrationPage {
     if (captchaFrame) {
       try {
         await captchaFrame.click('#recaptcha-anchor', { timeout: 5000 });
-      } catch (e) {
+      } catch {
         // Ignore if not clickable
       }
     }

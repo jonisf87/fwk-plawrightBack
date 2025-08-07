@@ -28,8 +28,7 @@ Given('I navigate to the registration page', async function (this: CustomWorld) 
 
 
 When('I fill in the registration form with valid data', async function (this: CustomWorld) {
-  const firstName = faker.person.firstName();
-  const lastName = faker.person.lastName();
+  // firstName and lastName are not needed for API registration
   const userName = faker.internet.userName().replace(/[^a-zA-Z0-9]/g, '') + Date.now();
   const password = generateValidPassword();
 
@@ -95,7 +94,7 @@ When('I fill in the registration form with an invalid password', async function 
   }
 
   // Store error for assertion
-  this._registrationError = error;
+  this._registrationError = error ?? undefined;
 });
 
 
