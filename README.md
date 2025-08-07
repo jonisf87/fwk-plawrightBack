@@ -1,3 +1,15 @@
+## Parallel User Simulation
+
+This project demonstrates robust, parallel end-to-end (E2E) testing using Playwright's `browser.newContext()` and Cucumber:
+
+- **User 1:** Fills and submits the [automation practice form](https://demoqa.com/automation-practice-form) with random data, selects all hobbies, uploads a sample image, and submits the form. The test robustly detects the confirmation modal even if overlays or ads are present. Includes a negative scenario for invalid email, with UI and API fallback for validation.
+- **User 2:** Navigates to the [sortable grid](https://demoqa.com/sortable), goes to the Grid tab, and shuffles the grid items, verifying the order changes.
+
+All flows are resilient to ad overlays, modals, and CAPTCHA interruptions. See `tests/features/parallelUsers.feature` and `tests/steps/ParallelUsers.steps.ts` for details.
+
+### Sample Image
+
+A sample image for upload is provided at `tests/fixtures/test-image.png`. You can replace it with any PNG/JPG file for testing.
 # Playwright + Cucumber + TypeScript E2E Demo (Registration & Login)
 
 Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register) and [demoqa.com/login](https://demoqa.com/login) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
@@ -52,11 +64,11 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 
 
 ## 📝 Project Goals & Implementation Notes
-- Automate both registration and login flows (UI or API fallback if CAPTCHA blocks UI registration)
+- Automate registration, login, and parallel user flows (UI or API fallback if CAPTCHA or overlays block UI)
 - Validate both successful and failed registrations (password regex) and logins (valid/invalid credentials)
 - Store credentials for login reuse
-- Use POM and Cucumber for maintainable, readable tests
-- Ensure robust error message detection and credential handling for both flows
+- Use POM and Cucumber for maintainable, readable, and robust tests
+- Ensure robust error message detection, credential handling, and modal/overlay resilience for all flows
 
 ---
 
@@ -68,13 +80,14 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 - **Playwright browser installation required:**
   - After `npm install`, run `npx playwright install` to download browser binaries.
 
-- **Registration & Login E2E Features:**
-  - Feature files: `tests/features/registration.feature` and `tests/features/login.feature` cover both registration and login flows, each with happy and negative scenarios.
-  - Page Objects: `tests/pages/RegistrationPage.ts` and `tests/pages/LoginPage.ts` encapsulate UI actions and selectors for each flow.
-  - Step Definitions: `tests/steps/Registration.steps.ts` and `tests/steps/Login.steps.ts` implement all steps, including credential reuse and robust error message detection.
+
+- **Registration, Login & Parallel User E2E Features:**
+  - Feature files: `tests/features/registration.feature`, `tests/features/login.feature`, and `tests/features/parallelUsers.feature` cover registration, login, and parallel user flows, each with happy and negative scenarios.
+  - Page Objects: `tests/pages/RegistrationPage.ts`, `tests/pages/LoginPage.ts`, `tests/pages/PracticeFormPage.ts`, and `tests/pages/SortablePage.ts` encapsulate UI actions and selectors for each flow.
+  - Step Definitions: `tests/steps/Registration.steps.ts`, `tests/steps/Login.steps.ts`, and `tests/steps/ParallelUsers.steps.ts` implement all steps, including credential reuse, robust error/modal detection, and API fallback.
   - Credentials are read from `tests/support/data.json` and support both `userName` and `username` keys for compatibility.
-  - Error message detection is robust, supporting multiple selectors and waiting for error visibility.
-  - All login and registration scenarios are now fully passing.
+  - Error/modal detection is robust, supporting multiple selectors, retries, and fallback to API if UI is blocked by CAPTCHA or overlays.
+  - All login, registration, and parallel user scenarios are now fully passing and resilient to UI interruptions.
 
 - **ESLint setup and compliance:**
   - ESLint v9+ is configured with a flat config (`eslint.config.mjs`).
@@ -83,10 +96,13 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
   - To lint, run: `npx eslint . --ext .ts --max-warnings=0`
 
 - **Registration Happy Path:**
-  - Now uses API registration only (bypasses UI and CAPTCHA).
+  - Uses API registration only (bypasses UI and CAPTCHA for reliability).
   - UI message validation is removed; only API response is asserted.
 - **Registration Negative Path:**
-  - Attempts UI registration, but if CAPTCHA blocks, falls back to API registration to validate password errors.
+  - Attempts UI registration, but if CAPTCHA or overlays block, falls back to API registration to validate password errors.
+- **Parallel User Scenarios:**
+  - Simulates two users in parallel: one filling the practice form (with robust modal/overlay handling and confirmation check), the other shuffling a sortable grid.
+  - All steps are resilient to ad overlays, modals, and timing issues.
 - **Selectors:**
   - All UI selectors for registration and login fields are based on the latest HTML attributes (see code for details).
 - **Credentials Storage:**
@@ -107,11 +123,15 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 - **Registration Happy Path:**
   - Register with valid data (API only), expect "User Register Successfully." in API response.
 - **Registration Negative Path:**
-  - Register with invalid password, expect password validation error (UI or API fallback).
+  - Register with invalid password, expect password validation error (UI or API fallback if CAPTCHA or overlays block UI).
 - **Login Happy Path:**
   - Login with valid stored credentials, expect successful login (profile page or logout button visible).
 - **Login Negative Path:**
   - Login with invalid credentials, expect error message (robust selector detection).
+- **Parallel User Scenario:**
+  - User 1 fills and submits the practice form (with overlays/modals hidden and robust confirmation modal check).
+  - User 2 shuffles the sortable grid items and verifies the order changes.
+  - Negative scenario: User 1 submits the form with an invalid email and expects a validation error (UI or API fallback).
 
 ## 🔐 Password Regex
 ```
