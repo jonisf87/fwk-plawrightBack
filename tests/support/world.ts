@@ -1,13 +1,17 @@
-import { setWorldConstructor, World, IWorldOptions } from '@cucumber/cucumber';
+
+import { setWorldConstructor, World, IWorldOptions, Before, After } from '@cucumber/cucumber';
 import { Browser, BrowserContext, Page, chromium } from '@playwright/test';
 
+
 import type { RegistrationPage } from '../pages/RegistrationPage';
+import type { LoginPage } from '../pages/LoginPage';
+
 
 export class CustomWorld extends World {
   browser!: Browser;
   context!: BrowserContext;
   page!: Page;
-  pageObj!: RegistrationPage;
+  pageObj!: RegistrationPage | LoginPage;
   credentials: { userName: string; password: string } | null = null;
   _registrationMessage?: string;
   _registrationError?: string;
@@ -29,10 +33,12 @@ export class CustomWorld extends World {
   }
 }
 
+
 setWorldConstructor(CustomWorld);
 
+
 // Hooks
-import { Before, After } from '@cucumber/cucumber';
+
 
 Before(async function (this: CustomWorld) {
   await this.init();

@@ -57,6 +57,7 @@ When('I fill in the registration form with valid data', async function (this: Cu
 });
 
 
+
 When('I fill in the registration form with an invalid password', async function (this: CustomWorld) {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
@@ -65,36 +66,40 @@ When('I fill in the registration form with an invalid password', async function 
 
   this.credentials = { userName, password };
 
-  await this.pageObj.fillFirstName(firstName);
-  await this.pageObj.fillLastName(lastName);
-  await this.pageObj.fillUserName(userName);
-  await this.pageObj.fillPassword(password);
+  if (this.pageObj instanceof RegistrationPage) {
+    await this.pageObj.fillFirstName(firstName);
+    await this.pageObj.fillLastName(lastName);
+    await this.pageObj.fillUserName(userName);
+    await this.pageObj.fillPassword(password);
 
-  // Try to click captcha checkbox if present
-  await this.pageObj.clickCaptchaCheckbox();
-  await this.pageObj.clickRegister();
+    // Try to click captcha checkbox if present
+    await this.pageObj.clickCaptchaCheckbox();
+    await this.pageObj.clickRegister();
 
-  // Wait for either error or captcha error
-  let error = await this.pageObj.getErrorMessage();
+    // Wait for either error or captcha error
+    let error = await this.pageObj.getErrorMessage();
 
-  if (error && error.includes('reCaptcha')) {
-    // Fallback to API registration (should fail with password error)
-    const response = await this.page.request.post('https://demoqa.com/Account/v1/User', {
-      data: {
-        userName,
-        password
-      },
-      headers: { 'Content-Type': 'application/json' }
-    });
-    if (response.status() === 400 || response.status() === 406) {
-      error = await response.text();
-    } else {
-      throw new Error('API registration did not fail as expected: ' + response.status());
+    if (error && error.includes('reCaptcha')) {
+      // Fallback to API registration (should fail with password error)
+      const response = await this.page.request.post('https://demoqa.com/Account/v1/User', {
+        data: {
+          userName,
+          password
+        },
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.status() === 400 || response.status() === 406) {
+        error = await response.text();
+      } else {
+        throw new Error('API registration did not fail as expected: ' + response.status());
+      }
     }
-  }
 
-  // Store error for assertion
-  this._registrationError = error ?? undefined;
+    // Store error for assertion
+    this._registrationError = error ?? undefined;
+  } else {
+    throw new Error('pageObj is not a RegistrationPage');
+  }
 });
 
 

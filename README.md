@@ -14,6 +14,7 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 
 
 
+
 ## 🚀 Getting Started
 
 1. **Install dependencies:**
@@ -32,9 +33,15 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
    ```
 
 
+
 4. **Lint your code (optional but recommended):**
    ```sh
    npx eslint . --ext .ts --max-warnings=0
+   ```
+
+5. **Run E2E Login and Registration Tests:**
+   ```sh
+   npm test
    ```
 
 5. **Generate Playwright code (optional):**
@@ -52,10 +59,20 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 ---
 
 
+
 ## 🛠️ Implementation & Changes
 
 - **Playwright browser installation required:**
   - After `npm install`, run `npx playwright install` to download browser binaries.
+
+- **Login E2E Feature Added:**
+  - New feature file: `tests/features/login.feature` with happy and negative login scenarios.
+  - Page Object: `tests/pages/LoginPage.ts` encapsulates login form actions and robust error message detection.
+  - Step Definitions: `tests/steps/Login.steps.ts` implements login steps, reuses credentials from registration, and handles both valid and invalid login attempts.
+  - Credentials are read from `tests/support/data.json` and support both `userName` and `username` keys for compatibility.
+  - Error message detection is robust, supporting multiple selectors and waiting for error visibility.
+  - All login and registration scenarios are now fully passing.
+
 - **ESLint setup and compliance:**
   - ESLint v9+ is configured with a flat config (`eslint.config.mjs`).
   - TypeScript and Playwright rules are enforced.
