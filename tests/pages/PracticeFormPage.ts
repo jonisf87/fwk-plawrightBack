@@ -11,7 +11,7 @@ export class PracticeFormPage {
       const modals = document.querySelectorAll('.modal, .modal-backdrop, [role="dialog"]');
       modals.forEach((el) => { (el as HTMLElement).style.display = 'none'; });
       document.querySelectorAll('iframe').forEach((el) => { (el as HTMLElement).style.display = 'none'; });
-    }) as any);
+    }) as () => void);
   }
   public readonly page: Page;
   constructor(page: Page) {
@@ -34,7 +34,7 @@ export class PracticeFormPage {
     await this.page.fill('#userEmail', value);
   }
 
-  async selectGender(gender: string) {
+  async selectGender() {
     await this.page.locator(`label[for="gender-radio-3"]`).click(); // "Other"
   }
 

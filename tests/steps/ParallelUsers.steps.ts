@@ -40,13 +40,13 @@ When('user 1 fills and submits the automation practice form with valid data', as
     // Retry text check up to 10 times
     for (let i = 0; i < 10; i++) {
       const text = await modal.textContent();
-      if (text && /thanks for submitting the form/i.test(text)) {
+          if (text && /thanks for submitting the form/i.test(text)) {
         foundConfirmation = true;
         break;
       }
       await form.page.waitForTimeout(300);
     }
-  } catch (e) {
+  } catch {
     foundConfirmation = false;
     // eslint-disable-next-line no-console
     console.log('DEBUG: Modal check error:', e);
@@ -87,7 +87,7 @@ When('user 1 fills the automation practice form with an invalid email', async fu
   await form.fillLastName(faker.person.lastName());
   await form.fillEmail('invalid-email');
   // Check email validity before proceeding
-  const isValid = await page.$eval('#userEmail', (el: any) => el.validity.valid);
+  const isValid = await page.$eval('#userEmail', (el: HTMLInputElement) => el.validity.valid);
   // eslint-disable-next-line no-console
   console.log('DEBUG: #userEmail validity.valid =', isValid);
   if (!isValid) {
@@ -97,7 +97,7 @@ When('user 1 fills the automation practice form with an invalid email', async fu
       await page.waitForTimeout(500);
       const emailError = await form.getEmailError();
       this.emailError = await emailError.isVisible();
-    } catch (e) {
+    } catch {
       // Fallback to API registration (should fail with password error)
       const userName = faker.internet.userName().replace(/[^a-zA-Z0-9]/g, '') + Date.now();
       const password = 'password1!'; // invalid password

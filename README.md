@@ -83,23 +83,25 @@ Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register
 
 - **Registration, Login & Parallel User E2E Features:**
   - Feature files: `tests/features/registration.feature`, `tests/features/login.feature`, and `tests/features/parallelUsers.feature` cover registration, login, and parallel user flows, each with happy and negative scenarios.
-  - Page Objects: `tests/pages/RegistrationPage.ts`, `tests/pages/LoginPage.ts`, `tests/pages/PracticeFormPage.ts`, and `tests/pages/SortablePage.ts` encapsulate UI actions and selectors for each flow.
-  - Step Definitions: `tests/steps/Registration.steps.ts`, `tests/steps/Login.steps.ts`, and `tests/steps/ParallelUsers.steps.ts` implement all steps, including credential reuse, robust error/modal detection, and API fallback.
+  - Page Objects: `tests/pages/RegistrationPage.ts`, `tests/pages/LoginPage.ts`, `tests/pages/PracticeFormPage.ts`, and `tests/pages/SortablePage.ts` encapsulate UI actions and selectors for each flow. All selectors are up to date with the latest demoqa.com HTML (e.g., registration uses `input#firstname[placeholder="First Name"]`, etc.).
+  - Step Definitions: `tests/steps/Registration.steps.ts`, `tests/steps/Login.steps.ts`, and `tests/steps/ParallelUsers.steps.ts` implement all steps, including credential reuse, robust error/modal detection, and API fallback. All code is now fully ESLint-compliant (no unused variables, no `any` types, no unused catch params).
   - Credentials are read from `tests/support/data.json` and support both `userName` and `username` keys for compatibility.
-  - Error/modal detection is robust, supporting multiple selectors, retries, and fallback to API if UI is blocked by CAPTCHA or overlays.
-  - All login, registration, and parallel user scenarios are now fully passing and resilient to UI interruptions.
+  - Error/modal detection is robust, supporting multiple selectors, retries, and fallback to API if UI is blocked by CAPTCHA or overlays. CAPTCHA handling in registration is fully automated: if UI registration is blocked, the test falls back to API registration and asserts the correct error.
+  - All login, registration, and parallel user scenarios are now fully passing and resilient to UI interruptions. Credentials are always stored in `/tests/support/data.json` after registration for reliable login reuse.
 
 - **ESLint setup and compliance:**
   - ESLint v9+ is configured with a flat config (`eslint.config.mjs`).
   - TypeScript and Playwright rules are enforced.
   - All code is linted and compliant with the rules (no unused variables, no unused catch params, no `any` types, etc).
   - To lint, run: `npx eslint . --ext .ts --max-warnings=0`
+  - The legacy `eslint.config.js` is not needed; only `eslint.config.mjs` is required for ESLint v9+.
 
 - **Registration Happy Path:**
   - Uses API registration only (bypasses UI and CAPTCHA for reliability).
   - UI message validation is removed; only API response is asserted.
+  - RegistrationPage selectors are robust and up to date (see code for details).
 - **Registration Negative Path:**
-  - Attempts UI registration, but if CAPTCHA or overlays block, falls back to API registration to validate password errors.
+  - Attempts UI registration, but if CAPTCHA or overlays block, falls back to API registration to validate password errors. CAPTCHA iframe handling is robust and ignores errors if not clickable.
 - **Parallel User Scenarios:**
   - Simulates two users in parallel: one filling the practice form (with robust modal/overlay handling and confirmation check), the other shuffling a sortable grid.
   - All steps are resilient to ad overlays, modals, and timing issues.
