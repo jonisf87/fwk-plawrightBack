@@ -1,0 +1,19 @@
+{
+  "name": "playwright-cucumber-pom-demoqa",
+  "version": "1.0.0",
+  "description": "E2E Playwright + Cucumber + TypeScript + POM for demoqa.com/register",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/**/*.ts",
+    "codegen": "playwright codegen https://demoqa.com/register"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.0.0",
+    "@faker-js/faker": "^8.0.2",
+    "@playwright/test": "^1.44.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

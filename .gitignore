@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# VSCode settings
+.vscode/
+
+# Playwright browser binaries
+playwright-report/
+
+# Environment files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test output
+*.log
+
+# Ignore lock file (useful for custom/private registries)
+package-lock.json
+
+tests/support/data.json
