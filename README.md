@@ -30,10 +30,6 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
   ├── /support         # Custom World, hooks, shared context
 ```
 
-
-
-
-
 ## 🚀 Getting Started
 
 1. **Install dependencies:**
@@ -45,12 +41,6 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
    ```sh
    npx playwright install
    ```
-## 📁 Data Storage & Credential Handling
-- Credentials for registration and login are managed via `/tests/support/data.json`.
-- **In CI/CD:** The file is auto-generated before tests run, and all registration/login steps use the same credentials from this file.
-- **Locally:** If `data.json` does not exist, it is generated with random credentials on the first run. If it exists, the same credentials are reused for registration and login.
-- If the user already exists (e.g., after repeated local runs), the registration step treats this as a successful registration for test purposes (no failure).
-`
 
 3. **Lint your code (optional but recommended):**
    ```sh
@@ -70,8 +60,6 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
    npx playwright codegen <url>
    ```
 
-
-
 ## 📝 Project Goals & Implementation Notes
 - Automate registration, login, parallel user flows, and API scenarios (UI or API fallback if CAPTCHA or overlays block UI)
 - Validate both successful and failed registrations (password regex), logins (valid/invalid credentials), and API responses (status codes, structure)
@@ -82,14 +70,10 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
 ---
 
 
-
-
-
 ## 🛠️ Implementation & Changes
 
 - **Playwright browser installation required:**
   - After `npm install`, run `npx playwright install` to download browser binaries.
-
 
 - **Registration, Login, Parallel User & API E2E Features:**
   - Feature files: `tests/features/registration.feature`, `tests/features/login.feature`, `tests/features/parallelUsers.feature`, and `tests/features/api.feature` cover registration, login, parallel user, and API flows, each with happy and negative scenarios.
@@ -133,9 +117,6 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
 
 ---
 
-
-
-
 ## 🧪 Test Scenarios
 
 - **Registration Happy Path:**
@@ -160,21 +141,12 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
 ^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})$
 ```
 
-## 📁 Data Storage
-- Generated credentials are saved in `/tests/support/data.json` for reuse in login scenarios.
-
-
-## ⚙️ Tech Stack
-- [Playwright](https://playwright.dev/)
-- [Cucumber.js](https://github.com/cucumber/cucumber-js)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Faker](https://fakerjs.dev/)
-
----
-
-> **Note:** If CAPTCHA blocks UI registration, use the API:
-
----
+## 📁 Data Storage & Credential Handling
+- Credentials for registration and login are managed via `/tests/support/data.json`.
+- **In CI/CD:** The file is auto-generated before tests run, and all registration/login steps use the same credentials from this file.
+- **Locally:** If `data.json` does not exist, it is generated with random credentials on the first run. If it exists, the same credentials are reused for registration and login.
+- If the user already exists (e.g., after repeated local runs), the registration step treats this as a successful registration for test purposes (no failure).
+`
 
 ## 🤖 CI/CD: GitHub Actions Workflow
 
@@ -195,6 +167,17 @@ See `.github/workflows/playwright.yml` for the full configuration.
   3. Run API tests, generating and uploading an HTML report.
 
 You can download the reports from the GitHub Actions run summary after each workflow execution.
+
+
+## ⚙️ Tech Stack
+- [Playwright](https://playwright.dev/)
+- [Cucumber.js](https://github.com/cucumber/cucumber-js)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Faker](https://fakerjs.dev/)
+
+---
+
+> **Note:** If CAPTCHA blocks UI registration, use the API:
 
 ---
 > 
