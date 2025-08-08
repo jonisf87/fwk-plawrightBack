@@ -5,7 +5,7 @@ import { CustomWorld } from '../support/world';
 import fs from 'fs';
 import path from 'path';
 
-const dataPath = path.resolve(__dirname, '../support/data.json');
+const dataPath = path.resolve(process.cwd(), 'tests/support/data.json');
 
 
 Given('I navigate to the login page', async function (this: CustomWorld) {
@@ -47,7 +47,7 @@ Then('I should see my profile page', async function (this: CustomWorld) {
   if (!this.page) {
     throw new Error('No page available in world context');
   }
-  await this.page.waitForSelector('#userName-value', { timeout: 15000 });
+  await this.page.waitForSelector('#userName-value', { timeout: 5000 });
   if (this.pageObj instanceof LoginPage) {
     expect(await this.pageObj.isLoggedIn()).toBeTruthy();
   } else {
