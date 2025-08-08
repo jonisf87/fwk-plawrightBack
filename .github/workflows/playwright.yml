@@ -50,8 +50,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0
+      - name: Clean Playwright browser cache
+        run: rm -rf node_modules/playwright-core/.local-browsers ~/.cache/ms-playwright
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: List Playwright browsers
+        run: ls -R node_modules/playwright-core/.local-browsers || true
       - name: Run UI Tests
         run: >
           PLAYWRIGHT_BROWSERS_PATH=0 BROWSER=${{ matrix.browser }} npx cucumber-js tests/features/**/*.feature
