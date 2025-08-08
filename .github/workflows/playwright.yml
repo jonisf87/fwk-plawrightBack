@@ -46,8 +46,6 @@ jobs:
           rm -rf node_modules package-lock.json || true
       - name: Install dependencies
         run: npm install
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: Run UI Tests
         run: >
           npx cucumber-js tests/features/**/*.feature 
