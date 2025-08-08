@@ -1,14 +1,16 @@
-## Parallel User Simulation
+# Playwright + Cucumber + TypeScript E2E Demo (Registration, Login & Parallel User Simulation)
 
-This project demonstrates robust, parallel end-to-end (E2E) testing using Playwright's `browser.newContext()` and Cucumber:
+Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register), [demoqa.com/login](https://demoqa.com/login), and [demoqa.com/automation-practice-form](https://demoqa.com/automation-practice-form) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
 
-- **User 1:** Fills and submits the [automation practice form](https://demoqa.com/automation-practice-form) with random data, selects all hobbies, uploads a sample image, and submits the form. The test robustly detects the confirmation modal even if overlays or ads are present. Includes a negative scenario for invalid email, with UI and API fallback for validation.
-- **User 2:** Navigates to the [sortable grid](https://demoqa.com/sortable), goes to the Grid tab, and shuffles the grid items, verifying the order changes.
+**This suite covers all major flows:**
+- User registration (happy/negative paths, robust CAPTCHA/API fallback)
+- User login (happy/negative paths)
+- **Parallel User Simulation:**
+  - User 1: Fills and submits the automation practice form with random data, selects all hobbies, uploads a sample image, and submits the form. The test robustly detects the confirmation modal even if overlays or ads are present. Includes a negative scenario for invalid email, with UI and API fallback for validation.
+  - User 2: Navigates to the sortable grid, goes to the Grid tab, and shuffles the grid items, verifying the order changes.
+  - All flows are resilient to ad overlays, modals, and CAPTCHA interruptions. See `tests/features/parallelUsers.feature` and `tests/steps/ParallelUsers.steps.ts` for details.
 
-All flows are resilient to ad overlays, modals, and CAPTCHA interruptions. See `tests/features/parallelUsers.feature` and `tests/steps/ParallelUsers.steps.ts` for details.
-
-### Sample Image
-
+**Sample Image:**
 A sample image for upload is provided at `tests/fixtures/test-image.png`. You can replace it with any PNG/JPG file for testing.
 
 # Playwright + Cucumber + TypeScript E2E Demo (Registration, Login & Parallel User Simulation)
