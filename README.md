@@ -1,11 +1,19 @@
 # Playwright + Cucumber + TypeScript E2E Demo (Registration, Login & Parallel User Simulation)
 
-Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register), [demoqa.com/login](https://demoqa.com/login), and [demoqa.com/automation-practice-form](https://demoqa.com/automation-practice-form) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
+
+Automated end-to-end and API tests for [demoqa.com/register](https://demoqa.com/register), [demoqa.com/login](https://demoqa.com/login), [demoqa.com/automation-practice-form](https://demoqa.com/automation-practice-form), and [demoqa.com/swagger/](https://demoqa.com/swagger/) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
 
 This suite covers all major flows:
+
 - User registration (happy/negative paths, robust CAPTCHA/API fallback)
 - User login (happy/negative paths)
 - Parallel User Simulation: two users in parallel, one filling the practice form (with overlays/modals/CAPTCHA handling), the other shuffling the sortable grid
+- **API Testing:**
+  - Retrieve all books from the Bookstore API
+  - Generate a user token via the authentication endpoint
+  - Use the generated token to call authenticated API methods (e.g., get user account details)
+  - Validate HTTP status codes and response structure using TypeScript assertions
+  - All API tests are integrated into the Cucumber BDD framework
 
 The "Parallel User Simulation" scenario is a core part of this suite, demonstrating robust multi-user E2E automation and resilience to UI interruptions. See the relevant feature and step files for details.
 
@@ -16,9 +24,9 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
 
 ```
 /tests
-  ├── /features        # Gherkin `.feature` files
-  ├── /steps           # Cucumber step definitions
-  ├── /pages           # Page Object Model classes (TypeScript)
+  ├── /features        # Gherkin `.feature` files (UI and API scenarios)
+  ├── /steps           # Cucumber step definitions (UI and API)
+  ├── /pages           # Page Object Model classes (TypeScript, for UI flows)
   ├── /support         # Custom World, hooks, shared context
 ```
 
@@ -49,12 +57,12 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
    npx eslint . --ext .ts --max-warnings=0
    ```
 
-5. **Run E2E Login and Registration Tests:**
+5. **Run E2E and API Tests:**
    ```sh
    npm test
    ```
 
-5. **Generate Playwright code (optional):**
+6. **Generate Playwright code (optional):**
    ```sh
    npm run codegen
    ```
@@ -62,11 +70,11 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
 
 
 ## 📝 Project Goals & Implementation Notes
-- Automate registration, login, and parallel user flows (UI or API fallback if CAPTCHA or overlays block UI)
-- Validate both successful and failed registrations (password regex) and logins (valid/invalid credentials)
-- Store credentials for login reuse
+- Automate registration, login, parallel user flows, and API scenarios (UI or API fallback if CAPTCHA or overlays block UI)
+- Validate both successful and failed registrations (password regex), logins (valid/invalid credentials), and API responses (status codes, structure)
+- Store credentials for login reuse and API tokens for authenticated API calls
 - Use POM and Cucumber for maintainable, readable, and robust tests
-- Ensure robust error message detection, credential handling, and modal/overlay resilience for all flows
+- Ensure robust error message detection, credential handling, modal/overlay resilience, and API assertion for all flows
 
 ---
 
@@ -79,13 +87,13 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
   - After `npm install`, run `npx playwright install` to download browser binaries.
 
 
-- **Registration, Login & Parallel User E2E Features:**
-  - Feature files: `tests/features/registration.feature`, `tests/features/login.feature`, and `tests/features/parallelUsers.feature` cover registration, login, and parallel user flows, each with happy and negative scenarios.
-  - Page Objects: `tests/pages/RegistrationPage.ts`, `tests/pages/LoginPage.ts`, `tests/pages/PracticeFormPage.ts`, and `tests/pages/SortablePage.ts` encapsulate UI actions and selectors for each flow. All selectors are up to date with the latest demoqa.com HTML (e.g., registration uses `input#firstname[placeholder="First Name"]`, etc.).
-  - Step Definitions: `tests/steps/Registration.steps.ts`, `tests/steps/Login.steps.ts`, and `tests/steps/ParallelUsers.steps.ts` implement all steps, including credential reuse, robust error/modal detection, and API fallback. All code is now fully ESLint-compliant (no unused variables, no `any` types, no unused catch params).
-  - Credentials are read from `tests/support/data.json` and support both `userName` and `username` keys for compatibility.
+- **Registration, Login, Parallel User & API E2E Features:**
+  - Feature files: `tests/features/registration.feature`, `tests/features/login.feature`, `tests/features/parallelUsers.feature`, and `tests/features/api.feature` cover registration, login, parallel user, and API flows, each with happy and negative scenarios.
+  - Page Objects: `tests/pages/RegistrationPage.ts`, `tests/pages/LoginPage.ts`, `tests/pages/PracticeFormPage.ts`, and `tests/pages/SortablePage.ts` encapsulate UI actions and selectors for each UI flow. API tests do not use POM.
+  - Step Definitions: `tests/steps/Registration.steps.ts`, `tests/steps/Login.steps.ts`, `tests/steps/ParallelUsers.steps.ts`, and `tests/steps/Api.steps.ts` implement all steps, including credential reuse, robust error/modal detection, API fallback, and API assertions. All code is now fully ESLint-compliant (no unused variables, no `any` types, no unused catch params).
+  - Credentials are read from `tests/support/data.json` and support both `userName` and `username` keys for compatibility. API tokens and userIds are managed in the Cucumber world state.
   - Error/modal detection is robust, supporting multiple selectors, retries, and fallback to API if UI is blocked by CAPTCHA or overlays. CAPTCHA handling in registration is fully automated: if UI registration is blocked, the test falls back to API registration and asserts the correct error.
-  - All login, registration, and parallel user scenarios are now fully passing and resilient to UI interruptions. Credentials are always stored in `/tests/support/data.json` after registration for reliable login reuse.
+  - All login, registration, parallel user, and API scenarios are now fully passing and resilient to UI interruptions. Credentials are always stored in `/tests/support/data.json` after registration for reliable login reuse.
 
 - **ESLint setup and compliance:**
   - ESLint v9+ is configured with a flat config (`eslint.config.mjs`).
@@ -132,6 +140,10 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
   - User 1 fills and submits the practice form (with overlays/modals hidden and robust confirmation modal check).
   - User 2 shuffles the sortable grid items and verifies the order changes.
   - Negative scenario: User 1 submits the form with an invalid email and expects a validation error (UI or API fallback).
+- **API Scenarios:**
+  - Retrieve all books from the Bookstore API, expect status 200 and a list of books
+  - Generate a user token via the authentication endpoint, expect status 200 and a valid token
+  - Use the generated token to call an authenticated API method (get user account details), expect status 200 and correct user info
 
 ## 🔐 Password Regex
 ```

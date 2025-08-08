@@ -16,6 +16,13 @@ export class CustomWorld extends World {
   _registrationMessage?: string;
   _registrationError?: string;
 
+  // API test state
+  apiUser?: { userName: string; password: string };
+  apiResponse?: import('@playwright/test').APIResponse;
+  apiResponseBody?: unknown;
+  apiToken?: string;
+  apiUserId?: string;
+
   constructor(options: IWorldOptions) {
     super(options);
   }
