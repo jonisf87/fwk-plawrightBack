@@ -50,13 +50,13 @@ jobs:
         run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: Run UI Tests
         run: >
-          npx cucumber-js tests/features/**/*.feature \
-          --require-module ts-node/register \
-          --require tests/steps/Registration.steps.ts \
-          --require tests/steps/Login.steps.ts \
-          --require tests/steps/ParallelUsers.steps.ts \
-          --require tests/support/*.ts \
-          --tags "not @api" \
+          npx cucumber-js tests/features/**/*.feature 
+          --require-module ts-node/register 
+          --require tests/steps/Registration.steps.ts 
+          --require tests/steps/Login.steps.ts 
+          --require tests/steps/ParallelUsers.steps.ts 
+          --require tests/support/*.ts 
+          --tags "not @api" 
           --format html:reports/ui-${{ matrix.browser }}-report.html
       - name: Upload UI HTML Report
         uses: actions/upload-artifact@v4
@@ -84,11 +84,11 @@ jobs:
         run: npm install
       - name: Run API Tests
         run: >
-          npx cucumber-js tests/features/**/*.feature \
-          --require-module ts-node/register \
-          --require tests/steps/Api.steps.ts \
-          --require tests/support/*.ts \
-          --tags "@api" \
+          npx cucumber-js tests/features/**/*.feature 
+          --require-module ts-node/register 
+          --require tests/steps/Api.steps.ts 
+          --require tests/support/*.ts 
+          --tags "@api" 
           --format html:reports/api-report.html
       - name: Upload API HTML Report
         uses: actions/upload-artifact@v4
