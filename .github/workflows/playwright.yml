@@ -58,7 +58,7 @@ jobs:
         run: ls -R node_modules/playwright-core/.local-browsers || true
       - name: Run UI Tests
         run: >
-          PLAYWRIGHT_BROWSERS_PATH=0 BROWSER=${{ matrix.browser }} npx cucumber-js tests/features/**/*.feature
+          BROWSER=${{ matrix.browser }} npx cucumber-js tests/features/**/*.feature
           --require-module ts-node/register
           --require tests/steps/Registration.steps.ts
           --require tests/steps/Login.steps.ts
