@@ -12,17 +12,6 @@ The "Parallel User Simulation" scenario is a core part of this suite, demonstrat
 **Sample Image:**
 A sample image for upload is provided at `tests/fixtures/test-image.png`. You can replace it with any PNG/JPG file for testing.
 
-# Playwright + Cucumber + TypeScript E2E Demo (Registration, Login & Parallel User Simulation)
-
-Automated end-to-end tests for [demoqa.com/register](https://demoqa.com/register), [demoqa.com/login](https://demoqa.com/login), and [demoqa.com/automation-practice-form](https://demoqa.com/automation-practice-form) using Playwright, Cucumber (Gherkin), TypeScript, and the Page Object Model (POM) pattern.
-
-**This suite covers all major flows:**
-- User registration (happy/negative paths, robust CAPTCHA/API fallback)
-- User login (happy/negative paths)
-- Parallel User Simulation: two users in parallel, one filling the practice form (with overlays/modals/CAPTCHA handling), the other shuffling the sortable grid
-
-The "Parallel User Simulation" scenario is a core part of this suite, demonstrating robust multi-user E2E automation and resilience to UI interruptions. See the section below for details.
-
 ## 📦 Folder Structure
 
 ```
