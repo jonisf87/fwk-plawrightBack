@@ -52,7 +52,8 @@ jobs:
         run: >
           npx cucumber-js tests/features/**/*.feature \
           --require-module ts-node/register \
-          --require tests/**/*.ts \
+          --require tests/steps/**/*.ts \
+          --require tests/support/*.ts \
           --require tests/steps/ParallelUsers.steps.ts \
           --tags "not @api" \
           --format html:reports/ui-${{ matrix.browser }}-report.html
@@ -84,7 +85,8 @@ jobs:
         run: >
           npx cucumber-js tests/features/**/*.feature \
           --require-module ts-node/register \
-          --require tests/**/*.ts \
+          --require tests/steps/**/*.ts \
+          --require tests/support/*.ts \
           --require tests/steps/Api.steps.ts \
           --tags "@api" \
           --format html:reports/api-report.html
