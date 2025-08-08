@@ -50,7 +50,7 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run UI Tests
         run: >
-          PLAYWRIGHT_BROWSERS_PATH=0 npx cucumber-js tests/features/**/*.feature
+          PLAYWRIGHT_BROWSERS_PATH=0 BROWSER=${{ matrix.browser }} npx cucumber-js tests/features/**/*.feature
           --require-module ts-node/register
           --require tests/steps/Registration.steps.ts
           --require tests/steps/Login.steps.ts
@@ -58,7 +58,6 @@ jobs:
           --require tests/support/*.ts
           --tags "not @api"
           --format html:reports/ui-${{ matrix.browser }}-report.html
-          --browser ${{ matrix.browser }}
       - name: Upload UI HTML Report
         uses: actions/upload-artifact@v4
         with:

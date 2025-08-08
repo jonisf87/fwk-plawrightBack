@@ -1,6 +1,6 @@
 
 import { setWorldConstructor, World, IWorldOptions, Before, After, ITestCaseHookParameter } from '@cucumber/cucumber';
-import { Browser, BrowserContext, Page, chromium, request, APIRequestContext } from '@playwright/test';
+import { Browser, BrowserContext, Page, chromium, firefox, webkit, request, APIRequestContext } from '@playwright/test';
 
 
 import type { RegistrationPage } from '../pages/RegistrationPage';
@@ -33,7 +33,21 @@ export class CustomWorld extends World {
     if (isApi) {
       this.apiRequestContext = await request.newContext();
     } else {
-      this.browser = await chromium.launch({ headless: true });
+      // Select browser based on BROWSER env variable (default to chromium)
+      let browserType = (process.env.BROWSER || 'chromium').toLowerCase();
+      let browserLauncher;
+      switch (browserType) {
+        case 'firefox':
+          browserLauncher = firefox;
+          break;
+        case 'webkit':
+          browserLauncher = webkit;
+          break;
+        case 'chromium':
+        default:
+          browserLauncher = chromium;
+      }
+      this.browser = await browserLauncher.launch({ headless: true });
       this.context = await this.browser.newContext();
       this.page = await this.context.newPage();
     }
