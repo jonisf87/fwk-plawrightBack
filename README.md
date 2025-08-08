@@ -45,12 +45,14 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
    ```sh
    npx playwright install
    ```
-
+## 📁 Data Storage & Credential Handling
+- Credentials for registration and login are managed via `/tests/support/data.json`.
+- **In CI/CD:** The file is auto-generated before tests run, and all registration/login steps use the same credentials from this file.
+- **Locally:** If `data.json` does not exist, it is generated with random credentials on the first run. If it exists, the same credentials are reused for registration and login.
+- If the user already exists (e.g., after repeated local runs), the registration step treats this as a successful registration for test purposes (no failure).
 3. **Run tests:**
    ```sh
-   npm test
    ```
-
 
 
 4. **Lint your code (optional but recommended):**
@@ -58,22 +60,15 @@ A sample image for upload is provided at `tests/fixtures/test-image.png`. You ca
    npx eslint . --ext .ts --max-warnings=0
    ```
 
-
 5. **Run E2E and API Tests:**
    ```sh
-   npm test
    ```
-
 6. **View HTML Reports:**
    After running tests, HTML reports are generated in the `reports/` directory:
-   - `reports/ui-chromium-report.html` (UI tests on Chromium)
    - `reports/ui-firefox-report.html` (UI tests on Firefox)
-   - `reports/api-report.html` (API tests)
    Open these files in your browser to view detailed test results.
-
 6. **Generate Playwright code (optional):**
    ```sh
-   npm run codegen
    ```
 
 
