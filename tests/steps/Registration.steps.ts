@@ -12,7 +12,8 @@ const dataPath = path.resolve(__dirname, '../support/data.json');
 
 function generateValidPassword() {
   // At least 8 chars, 1 upper, 1 lower, 1 number, 1 special
-  return faker.internet.password(10, false, /[A-Z]/, 'a1!A');
+  // Use the new recommended signature for faker.internet.password
+  return faker.internet.password({ length: 10, pattern: /[A-Z]/, prefix: 'a1!A' });
 }
 
 function generateInvalidPassword() {
@@ -20,7 +21,11 @@ function generateInvalidPassword() {
   return 'password1!';
 }
 
+
 Given('I navigate to the registration page', async function (this: CustomWorld) {
+  if (!this.page) {
+    throw new Error('No page available in world context');
+  }
   this.pageObj = new RegistrationPage(this.page);
   await this.pageObj.goto();
 });
@@ -35,6 +40,9 @@ When('I fill in the registration form with valid data', async function (this: Cu
   this.credentials = { userName, password };
 
   // Always use API registration for happy path
+  if (!this.page) {
+    throw new Error('No page available in world context');
+  }
   const response = await this.page.request.post('https://demoqa.com/Account/v1/User', {
     data: {
       userName,
@@ -79,8 +87,11 @@ When('I fill in the registration form with an invalid password', async function 
     // Wait for either error or captcha error
     let error = await this.pageObj.getErrorMessage();
 
-    if (error && error.includes('reCaptcha')) {
+    if (error?.includes('reCaptcha')) {
       // Fallback to API registration (should fail with password error)
+      if (!this.page) {
+        throw new Error('No page available in world context');
+      }
       const response = await this.page.request.post('https://demoqa.com/Account/v1/User', {
         data: {
           userName,
@@ -113,6 +124,6 @@ Then('I should see a success message', async function (this: CustomWorld) {
 
 Then('I should see a validation error message', async function (this: CustomWorld) {
   // Use error from UI or API fallback
-  const error = this._registrationError || (await this.pageObj.getErrorMessage());
+  const error = this._registrationError || (this.pageObj && await this.pageObj.getErrorMessage());
   expect(error).toMatch(/Password must have|Passwords must have/i);
 });

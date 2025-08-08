@@ -14,7 +14,7 @@ Given('I have valid user credentials', function (this: CustomWorld) {
 });
 
 When('I request all books from the API', async function (this: CustomWorld) {
-  const response = await this.page.request.get(`${BASE_URL}/BookStore/v1/Books`);
+  const response = await this.apiRequestContext!.get(`${BASE_URL}/BookStore/v1/Books`);
   this.apiResponse = response;
   this.apiResponseBody = await response.json();
 });
@@ -37,13 +37,13 @@ When('I request a token from the API', async function (this: CustomWorld) {
     };
   }
   // Register user before generating token
-  const regResponse = await this.page.request.post(`${BASE_URL}/Account/v1/User`, {
+  const regResponse = await this.apiRequestContext!.post(`${BASE_URL}/Account/v1/User`, {
     data: this.apiUser,
     headers: { 'Content-Type': 'application/json' }
   });
   const regBody = await regResponse.json();
   this.apiUserId = regBody.userID || regBody.userId || regBody.id;
-  const response = await this.page.request.post(`${BASE_URL}/Account/v1/GenerateToken`, {
+  const response = await this.apiRequestContext!.post(`${BASE_URL}/Account/v1/GenerateToken`, {
     data: this.apiUser,
     headers: { 'Content-Type': 'application/json' }
   });
@@ -67,14 +67,14 @@ Given('I have a valid user token', async function (this: CustomWorld) {
     };
   }
   // Register user (ignore if already exists)
-  const regResponse = await this.page.request.post(`${BASE_URL}/Account/v1/User`, {
+  const regResponse = await this.apiRequestContext!.post(`${BASE_URL}/Account/v1/User`, {
     data: this.apiUser,
     headers: { 'Content-Type': 'application/json' }
   });
   const regBody = await regResponse.json();
   this.apiUserId = regBody.userID || regBody.userId || regBody.id;
   // Generate token
-  const response = await this.page.request.post(`${BASE_URL}/Account/v1/GenerateToken`, {
+  const response = await this.apiRequestContext!.post(`${BASE_URL}/Account/v1/GenerateToken`, {
     data: this.apiUser,
     headers: { 'Content-Type': 'application/json' }
   });
@@ -85,7 +85,7 @@ Given('I have a valid user token', async function (this: CustomWorld) {
 When('I request my user account details', async function (this: CustomWorld) {
   // Use userId if available, otherwise fallback to userName
   const userId = this.apiUserId || this.apiUser!.userName;
-  const response = await this.page.request.get(`${BASE_URL}/Account/v1/User/${userId}`, {
+  const response = await this.apiRequestContext!.get(`${BASE_URL}/Account/v1/User/${userId}`, {
     headers: { Authorization: `Bearer ${this.apiToken!}` }
   });
   this.apiResponse = response;
