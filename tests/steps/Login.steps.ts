@@ -43,11 +43,11 @@ When('I fill in the login form with invalid credentials', async function (this: 
 
 
 Then('I should see my profile page', async function (this: CustomWorld) {
-  // Wait for navigation or logout button
+  // Wait for profile page username element
   if (!this.page) {
     throw new Error('No page available in world context');
   }
-  await this.page.waitForSelector('#submit', { timeout: 5000 });
+  await this.page.waitForSelector('#userName-value', { timeout: 5000 });
   if (this.pageObj instanceof LoginPage) {
     expect(await this.pageObj.isLoggedIn()).toBeTruthy();
   } else {
