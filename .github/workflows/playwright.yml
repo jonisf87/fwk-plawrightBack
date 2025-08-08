@@ -22,8 +22,6 @@ jobs:
           rm -rf node_modules package-lock.json || true
       - name: Install dependencies
         run: npm install
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: Run ESLint
         run: npx eslint . --ext .ts --max-warnings=0 --config eslint.config.mjs
 
@@ -49,17 +47,18 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
+        run: npx playwright install --with-deps
       - name: Run UI Tests
         run: >
-          npx cucumber-js tests/features/**/*.feature 
-          --require-module ts-node/register 
-          --require tests/steps/Registration.steps.ts 
-          --require tests/steps/Login.steps.ts 
-          --require tests/steps/ParallelUsers.steps.ts 
-          --require tests/support/*.ts 
-          --tags "not @api" 
+          PLAYWRIGHT_BROWSERS_PATH=0 npx cucumber-js tests/features/**/*.feature
+          --require-module ts-node/register
+          --require tests/steps/Registration.steps.ts
+          --require tests/steps/Login.steps.ts
+          --require tests/steps/ParallelUsers.steps.ts
+          --require tests/support/*.ts
+          --tags "not @api"
           --format html:reports/ui-${{ matrix.browser }}-report.html
+          --browser ${{ matrix.browser }}
       - name: Upload UI HTML Report
         uses: actions/upload-artifact@v4
         with:
