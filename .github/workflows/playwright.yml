@@ -17,8 +17,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
       - name: Authenticate NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PLAYWRIGHT_TOKEN }}" > ~/.npmrc
+      - name: Clear node_modules and package-lock.json if exist
+        run: |
+          rm -rf node_modules package-lock.json || true
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Run ESLint
         run: npx eslint . --ext .ts --max-warnings=0 --config eslint.config.mjs
 
@@ -38,8 +41,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
       - name: Authenticate NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PLAYWRIGHT_TOKEN }}" > ~/.npmrc
+      - name: Clear node_modules and package-lock.json if exist
+        run: |
+          rm -rf node_modules package-lock.json || true
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: Run UI Tests
@@ -69,8 +75,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
       - name: Authenticate NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PLAYWRIGHT_TOKEN }}" > ~/.npmrc
+      - name: Clear node_modules and package-lock.json if exist
+        run: |
+          rm -rf node_modules package-lock.json || true
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Run API Tests
         run: >
           npx cucumber-js tests/features/**/*.feature \
