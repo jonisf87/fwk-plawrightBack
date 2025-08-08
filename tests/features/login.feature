@@ -4,6 +4,11 @@ Feature: Login
   I want to log in to the application
   So that I can access my profile
 
+  Background:
+    Given I navigate to the registration page
+    When I fill in the registration form with valid data
+    Then I should see a success message
+
   Scenario: Successful login with valid credentials
     Given I navigate to the login page
     When I fill in the login form with valid stored credentials
