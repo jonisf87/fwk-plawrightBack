@@ -74,6 +74,13 @@ jobs:
           name: ui-report-${{ matrix.browser }}
           path: reports/ui-${{ matrix.browser }}-report.html
 
+      - name: Upload Login Failure Screenshot (if present)
+        uses: actions/upload-artifact@v4
+        with:
+          name: login-profile-fail-${{ matrix.browser }}
+          path: reports/login-profile-fail.png
+        if: always()
+
   api-tests:
     name: API Tests
     runs-on: ubuntu-latest

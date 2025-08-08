@@ -43,11 +43,20 @@ When('I fill in the login form with invalid credentials', async function (this: 
 
 
 Then('I should see my profile page', async function (this: CustomWorld) {
-  // Wait for profile page username element
+  // Wait for profile page username element, capture debug info if not found
   if (!this.page) {
     throw new Error('No page available in world context');
   }
-  await this.page.waitForSelector('#userName-value', { timeout: 5000 });
+  try {
+    await this.page.waitForSelector('#userName-value', { timeout: 5000 });
+  } catch (e) {
+    // Capture screenshot and page content for debugging
+    await this.page.screenshot({ path: 'reports/login-profile-fail.png', fullPage: true });
+    const html = await this.page.content();
+    // Log a snippet of the page content for CI logs
+    console.error('Login failed, page HTML snippet:', html.slice(0, 1000));
+    throw new Error('Profile page not visible after login. Screenshot saved to reports/login-profile-fail.png');
+  }
   if (this.pageObj instanceof LoginPage) {
     expect(await this.pageObj.isLoggedIn()).toBeTruthy();
   } else {
