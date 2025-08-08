@@ -1,3 +1,4 @@
+@ui
 Feature: Parallel user simulation for Practice Form and Sortable Grid
 
   Scenario: Two users interact with different pages in parallel

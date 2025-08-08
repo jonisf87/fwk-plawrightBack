@@ -1,3 +1,4 @@
+@api
 Feature: DemoQA Bookstore API
 
   Scenario: Retrieve all books

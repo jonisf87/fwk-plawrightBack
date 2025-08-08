@@ -1,3 +1,4 @@
+@ui
 Feature: User Registration
   As a new user
   I want to register on the DemoQA website

@@ -1,3 +1,4 @@
+@ui
 Feature: Login
   As a registered user
   I want to log in to the application
